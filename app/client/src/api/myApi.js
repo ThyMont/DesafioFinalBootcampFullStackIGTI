@@ -25,7 +25,7 @@ const getAllPeriods = async () => {
     const { data } = await api.get(`${RESOURCE}/allPeriods`);
     return data;
   } catch (error) {
-    console.log(error.message);
+    throw new Error('Servidor temporariamente indisponível');
   }
 };
 
@@ -34,7 +34,7 @@ const getTransactionsByPeriod = async (period) => {
     const { data } = await api.get(`${RESOURCE}/?period=${period}`);
     return data;
   } catch (error) {
-    // console.log(error.message);
+    throw new Error('Servidor temporariamente indisponível');
   }
 };
 

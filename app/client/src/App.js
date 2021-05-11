@@ -5,6 +5,7 @@ import ButtonPreview from './components/ButtonPreview';
 import Header from './components/Header';
 import Loader from './components/Loader';
 import Select from './components/Select';
+import Summary from './components/Summary';
 
 export default function App() {
   const [allPeriods, setAllPeriods] = useState([]);
@@ -36,10 +37,30 @@ export default function App() {
     const localTransactions = async () => {
       const data = await api.getTransactionsByPeriod(currentPeriod);
       setTransactions(data);
+      setFilteredTransactions(data);
     };
     localTransactions();
     setIsLoading(false);
   }, [currentPeriod]);
+
+  useEffect(() => {
+    const summary = {};
+    console.log(filteredTransactions);
+    summary.countTransactions = filteredTransactions.length;
+    summary.totalEarnings = filteredTransactions
+      .filter((transaction) => transaction.type === '+')
+      .reduce((acc, a) => {
+        return a.value + acc;
+      }, 0);
+    summary.totalCosts = filteredTransactions
+      .filter((transaction) => transaction.type === '-')
+      .reduce((acc, a) => {
+        return a.value + acc;
+      }, 0);
+    summary.balance = summary.totalEarnings - summary.totalCosts;
+
+    setSummary(summary);
+  }, [filteredTransactions]);
 
   const handleButtonEvent = (newIndex) => {
     const localPeriod = allPeriods[newIndex];
@@ -48,7 +69,6 @@ export default function App() {
   const handleChange = (period) => {
     setCurrentPeriod(period);
   };
-  console.log(transactions);
 
   return isLoading ? (
     <div className="container" style={{ textAlign: 'center' }}>
@@ -84,6 +104,7 @@ export default function App() {
           currentPeriod={currentPeriod}
         ></ButtonNext>
       </div>
+      <Summary summary={summary}></Summary>
     </div>
   );
 }
@@ -98,14 +119,4 @@ function getCurrentPeriod(data) {
 
   const currentPeriod = data.find((period) => period === yearMonth);
   return currentPeriod || { ...data[0] };
-}
-
-function firstGetCurrentPeriod() {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
-  const yearMonth = `${year.toString().padStart(4, 0)}-${month
-    .toString()
-    .padStart(2, 0)}`;
-  return yearMonth;
 }
