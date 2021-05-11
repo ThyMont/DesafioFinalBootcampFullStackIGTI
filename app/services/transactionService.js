@@ -53,9 +53,15 @@ async function deleteTransaction(_id) {
   return true;
 }
 
+async function getAllPeriods() {
+  const periods = await TransactionModel.distinct('yearMonth');
+  return periods;
+}
+
 module.exports = {
   getTransactions,
   postTransaction,
   deleteTransaction,
   updateTransaction,
+  getAllPeriods,
 };

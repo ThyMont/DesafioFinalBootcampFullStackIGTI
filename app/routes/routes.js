@@ -20,6 +20,15 @@ transactionRouter.get('/', async (req, res) => {
   }
 });
 
+transactionRouter.get('/allPeriods', async (req, res) => {
+  try {
+    const periods = await service.getAllPeriods();
+    res.send(periods);
+  } catch ({ message }) {
+    res.status(400).send(message);
+  }
+});
+
 transactionRouter.post('/', async (req, res) => {
   const { body } = req;
   try {
