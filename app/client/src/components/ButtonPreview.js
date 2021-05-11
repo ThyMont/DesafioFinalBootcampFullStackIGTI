@@ -9,13 +9,13 @@ export default function ButtonPreview({ periods, currentPeriod, onClick }) {
   };
 
   return (
-    <a
+    <button
       className={
         'waves-effect waves-light btn ' + (enable ? 'enabled' : 'disabled')
       }
       onClick={handleClick}
     >
       {'<'}
-    </a>
+    </button>
   );
 }
