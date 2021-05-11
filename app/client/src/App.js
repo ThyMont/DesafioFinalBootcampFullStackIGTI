@@ -8,6 +8,7 @@ import Loader from './components/Loader';
 import ModalInsert from './components/ModalInsert';
 import Select from './components/Select';
 import Summary from './components/Summary';
+import TransactionCards from './components/TransactionCards';
 
 export default function App() {
   const [allPeriods, setAllPeriods] = useState([]);
@@ -71,7 +72,9 @@ export default function App() {
     setCurrentPeriod(period);
   };
 
-  const handleNewTransaction = () => {
+  const handleOpenTransactionModal = (transaction = null) => {
+    setSelectedTransaction(transaction);
+    console.log(transaction);
     setIsModalOpen(true);
   };
   const handleModalClose = () => {
@@ -122,7 +125,7 @@ export default function App() {
       <Summary summary={summary}></Summary>
       <div style={{ marginTop: '2em' }}>
         <ButtonNewTransaction
-          onClick={handleNewTransaction}
+          onClick={handleOpenTransactionModal}
         ></ButtonNewTransaction>
       </div>
       {isModalOpen && (
@@ -130,8 +133,13 @@ export default function App() {
           isModalOpen={isModalOpen}
           handleClose={handleModalClose}
           onSave={handleSave}
+          selectedTransaction={selectedTransaction}
         ></ModalInsert>
       )}
+      <TransactionCards
+        onClick={handleOpenTransactionModal}
+        transactions={filteredTransactions}
+      ></TransactionCards>
     </div>
   );
 }
