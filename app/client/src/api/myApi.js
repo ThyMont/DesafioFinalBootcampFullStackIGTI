@@ -38,7 +38,17 @@ const getTransactionsByPeriod = async (period) => {
   }
 };
 
+const postTransaction = async (transaction) => {
+  try {
+    const { data } = api.post(RESOURCE, transaction);
+    return data;
+  } catch (error) {
+    throw new Error('Servidor temporariamente indisponível');
+  }
+};
+
 export default {
   getAllPeriods,
   getTransactionsByPeriod,
+  postTransaction,
 };

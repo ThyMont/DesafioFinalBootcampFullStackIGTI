@@ -14,7 +14,7 @@ export default function ButtonNext({ periods, currentPeriod, onClick }) {
         'waves-effect waves-light btn ' + (enable ? 'enabled' : 'disabled')
       }
       onClick={handleClick}
-      href=""
+      style={{ zIndex: '0' }}
     >
       {'>'}
     </button>

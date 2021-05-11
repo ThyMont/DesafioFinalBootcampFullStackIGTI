@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import api from './api/myApi';
+import ButtonNewTransaction from './components/ButtonNewTransaction';
 import ButtonNext from './components/ButtonNext';
 import ButtonPreview from './components/ButtonPreview';
 import Header from './components/Header';
 import Loader from './components/Loader';
+import ModalInsert from './components/ModalInsert';
 import Select from './components/Select';
 import Summary from './components/Summary';
 
@@ -45,7 +47,6 @@ export default function App() {
 
   useEffect(() => {
     const summary = {};
-    console.log(filteredTransactions);
     summary.countTransactions = filteredTransactions.length;
     summary.totalEarnings = filteredTransactions
       .filter((transaction) => transaction.type === '+')
@@ -68,6 +69,20 @@ export default function App() {
   };
   const handleChange = (period) => {
     setCurrentPeriod(period);
+  };
+
+  const handleNewTransaction = () => {
+    setIsModalOpen(true);
+  };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+  const handleSave = (transaction, mode) => {
+    if (mode === 'insert') {
+      api.postTransaction(transaction);
+    }
+
+    setIsModalOpen(false);
   };
 
   return isLoading ? (
@@ -105,6 +120,18 @@ export default function App() {
         ></ButtonNext>
       </div>
       <Summary summary={summary}></Summary>
+      <div style={{ marginTop: '2em' }}>
+        <ButtonNewTransaction
+          onClick={handleNewTransaction}
+        ></ButtonNewTransaction>
+      </div>
+      {isModalOpen && (
+        <ModalInsert
+          isModalOpen={isModalOpen}
+          handleClose={handleModalClose}
+          onSave={handleSave}
+        ></ModalInsert>
+      )}
     </div>
   );
 }

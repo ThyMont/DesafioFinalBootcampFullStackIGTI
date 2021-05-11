@@ -14,6 +14,7 @@ export default function ButtonPreview({ periods, currentPeriod, onClick }) {
         'waves-effect waves-light btn ' + (enable ? 'enabled' : 'disabled')
       }
       onClick={handleClick}
+      style={{ zIndex: '0' }}
     >
       {'<'}
     </button>
