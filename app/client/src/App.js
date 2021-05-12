@@ -6,8 +6,10 @@ import ButtonPreview from './components/ButtonPreview';
 import Header from './components/Header';
 import Loader from './components/Loader';
 import ModalInsert from './components/ModalInsert';
+import ModalUpdate from './components/ModalUpdate';
 import Select from './components/Select';
 import Summary from './components/Summary';
+import TextFilter from './components/TextFilter';
 import TransactionCards from './components/TransactionCards';
 
 export default function App() {
@@ -20,7 +22,10 @@ export default function App() {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const [summary, setSummary] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] =
+    useState(false);
+  const [isEditTransactionModalOpen, setIsEditTransactionModalOpen] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -64,6 +69,21 @@ export default function App() {
     setSummary(summary);
   }, [filteredTransactions]);
 
+  useEffect(() => {
+    if (filterText.trim() === '') {
+      setFilteredTransactions([...transactions]);
+    } else {
+      const lowerCaseFilter = filterText.toLowerCase();
+
+      const newFilteredTransactions = transactions.filter((transaction) => {
+        const description = transaction.description.toLowerCase();
+        return description.includes(lowerCaseFilter);
+      });
+
+      setFilteredTransactions(newFilteredTransactions);
+    }
+  }, [filterText, transactions]);
+
   const handleButtonEvent = (newIndex) => {
     const localPeriod = allPeriods[newIndex];
     setCurrentPeriod(localPeriod);
@@ -72,20 +92,47 @@ export default function App() {
     setCurrentPeriod(period);
   };
 
-  const handleOpenTransactionModal = (transaction = null) => {
-    setSelectedTransaction(transaction);
-    console.log(transaction);
-    setIsModalOpen(true);
+  const handleOpenTransactionModal = () => {
+    setIsNewTransactionModalOpen(true);
   };
+
+  const handleOpenEditTransactionModal = (id) => {
+    const localSelectedTransaction = filteredTransactions.find(
+      (t) => t._id === id
+    );
+    setSelectedTransaction(localSelectedTransaction);
+    setIsEditTransactionModalOpen(true);
+  };
+
   const handleModalClose = () => {
-    setIsModalOpen(false);
+    setSelectedTransaction(null);
+    setIsNewTransactionModalOpen(false);
+    setIsEditTransactionModalOpen(false);
   };
-  const handleSave = (transaction, mode) => {
+  const handleSave = (newTransaction, mode) => {
     if (mode === 'insert') {
-      api.postTransaction(transaction);
+      api.postTransaction(newTransaction);
+      return;
+    }
+    if (mode === 'update') {
+      const updatedTransaction = api.updateTransaction(newTransaction);
+      const newTransactions = [...transactions];
+      const index = newTransactions.indexOf(
+        (t) => t._id === newTransaction._id
+      );
+      newTransactions[index] = updatedTransaction;
+      setTransactions(newTransactions);
+      setFilteredTransactions(newTransactions);
+
+      setIsEditTransactionModalOpen(false);
+      return;
     }
 
-    setIsModalOpen(false);
+    setIsEditTransactionModalOpen(false);
+  };
+
+  const handleTextChange = (text) => {
+    setFilterText(text);
   };
 
   return isLoading ? (
@@ -127,17 +174,25 @@ export default function App() {
         <ButtonNewTransaction
           onClick={handleOpenTransactionModal}
         ></ButtonNewTransaction>
+        <TextFilter onChange={handleTextChange}></TextFilter>
       </div>
-      {isModalOpen && (
+      {isNewTransactionModalOpen && (
         <ModalInsert
-          isModalOpen={isModalOpen}
+          isModalOpen={isNewTransactionModalOpen}
+          handleClose={handleModalClose}
+          onSave={handleSave}
+        ></ModalInsert>
+      )}
+      {isEditTransactionModalOpen && (
+        <ModalUpdate
+          isModalOpen={isEditTransactionModalOpen}
           handleClose={handleModalClose}
           onSave={handleSave}
           selectedTransaction={selectedTransaction}
-        ></ModalInsert>
+        ></ModalUpdate>
       )}
       <TransactionCards
-        onClick={handleOpenTransactionModal}
+        onClick={handleOpenEditTransactionModal}
         transactions={filteredTransactions}
       ></TransactionCards>
     </div>
