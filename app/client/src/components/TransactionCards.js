@@ -3,6 +3,7 @@ import TransactionCard from './TransactionCard';
 
 export default function TransactionCards({ transactions, onClick }) {
   transactions.sort((a, b) => a.day - b.day);
+
   return (
     <div style={{ marginTop: '1.5em' }}>
       {transactions.map((transaction) => {

@@ -9,11 +9,16 @@ export default function TransactionCard({
     onClick(transactionID);
   };
 
+  const COLOR = transaction.type === '-' ? 'red lighten-4' : 'green accent-1';
+
   return (
-    <div className="col s12 m7">
+    <div className="col s12 m7 ">
       <div className="card horizontal">
         <div className="card-stacked">
-          <div className="card-content" style={{ display: 'inline-flex' }}>
+          <div
+            className={`${COLOR} card-content`}
+            style={{ display: 'inline-flex' }}
+          >
             <div>
               <span
                 style={{

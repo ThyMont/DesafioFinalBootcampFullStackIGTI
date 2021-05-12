@@ -49,7 +49,7 @@ export default function App() {
     };
     localTransactions();
     setIsLoading(false);
-  }, [currentPeriod]);
+  }, [currentPeriod, isNewTransactionModalOpen, isEditTransactionModalOpen]);
 
   useEffect(() => {
     const summary = {};
@@ -109,9 +109,12 @@ export default function App() {
     setIsNewTransactionModalOpen(false);
     setIsEditTransactionModalOpen(false);
   };
+
   const handleSave = (newTransaction, mode) => {
     if (mode === 'insert') {
       api.postTransaction(newTransaction);
+      setTransactions([]);
+      setIsNewTransactionModalOpen(false);
       return;
     }
     if (mode === 'update') {
