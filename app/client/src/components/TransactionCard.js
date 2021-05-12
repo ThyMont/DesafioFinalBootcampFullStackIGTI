@@ -1,8 +1,12 @@
 import React from 'react';
 
-export default function TransactionCard({ transaction, onClick }) {
+export default function TransactionCard({
+  transaction,
+  onClick,
+  transactionID,
+}) {
   const startEdit = () => {
-    onClick(transaction);
+    onClick(transactionID);
   };
 
   return (
@@ -35,7 +39,7 @@ export default function TransactionCard({ transaction, onClick }) {
                 {transaction.description}
               </p>
             </div>
-            <div style={{ width: '20%', textAlign: 'justify' }}>
+            <div style={{ width: '15%', textAlign: 'justify' }}>
               <span
                 style={{
                   fontWeight: 'bolder',
@@ -47,12 +51,16 @@ export default function TransactionCard({ transaction, onClick }) {
               </span>
             </div>
             <div>
-              <a href="" style={{ marginRight: '1em' }} onClick={startEdit}>
+              <button
+                data-target="modal1"
+                style={{ marginRight: '1em' }}
+                onClick={startEdit}
+              >
                 <i className="material-icons">border_color</i>
-              </a>
-              <a href="">
+              </button>
+              <button>
                 <i className="material-icons">cancel</i>
-              </a>
+              </button>
             </div>
           </div>
         </div>

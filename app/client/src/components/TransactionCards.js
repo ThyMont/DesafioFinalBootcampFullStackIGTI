@@ -9,6 +9,7 @@ export default function TransactionCards({ transactions, onClick }) {
         return (
           <TransactionCard
             key={transaction._id}
+            transactionID={transaction._id}
             transaction={transaction}
             onClick={onClick}
           ></TransactionCard>
