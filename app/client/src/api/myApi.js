@@ -38,6 +38,16 @@ const getTransactionsByPeriod = async (period) => {
   }
 };
 
+const updateTransaction = async (transaction) => {
+  try {
+    const { _id } = transaction;
+    const { data } = api.put(`${RESOURCE}/${_id}`, transaction);
+    return data;
+  } catch (error) {
+    throw new Error('Servidor temporariamente indisponível');
+  } //Tentando resolver o update
+};
+
 const postTransaction = async (transaction) => {
   try {
     const { data } = api.post(RESOURCE, transaction);
@@ -51,4 +61,5 @@ export default {
   getAllPeriods,
   getTransactionsByPeriod,
   postTransaction,
+  updateTransaction,
 };
