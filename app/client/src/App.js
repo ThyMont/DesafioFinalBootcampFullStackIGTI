@@ -134,6 +134,14 @@ export default function App() {
     setIsEditTransactionModalOpen(false);
   };
 
+  const handleDeleteTransaction = (id) => {
+    api.deleteTransaction(id);
+    const newTransactions = transactions.filter((t) => t._id !== id);
+    setTransactions(newTransactions);
+    setFilteredTransactions(newTransactions);
+    return;
+  };
+
   const handleTextChange = (text) => {
     setFilterText(text);
   };
@@ -196,6 +204,7 @@ export default function App() {
       )}
       <TransactionCards
         onClick={handleOpenEditTransactionModal}
+        doDelete={handleDeleteTransaction}
         transactions={filteredTransactions}
       ></TransactionCards>
     </div>

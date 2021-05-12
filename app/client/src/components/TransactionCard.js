@@ -4,9 +4,13 @@ export default function TransactionCard({
   transaction,
   onClick,
   transactionID,
+  doDelete,
 }) {
   const startEdit = () => {
     onClick(transactionID);
+  };
+  const handleDelete = () => {
+    doDelete(transactionID);
   };
 
   const COLOR = transaction.type === '-' ? 'red lighten-4' : 'green accent-1';
@@ -30,7 +34,7 @@ export default function TransactionCard({
                 {transaction.day}
               </span>
             </div>
-            <div style={{ width: '65%' }}>
+            <div style={{ width: '60%' }}>
               <p
                 style={{
                   fontWeight: 'bolder',
@@ -44,7 +48,7 @@ export default function TransactionCard({
                 {transaction.description}
               </p>
             </div>
-            <div style={{ width: '15%', textAlign: 'justify' }}>
+            <div style={{ width: '20%', textAlign: 'justify' }}>
               <span
                 style={{
                   fontWeight: 'bolder',
@@ -55,7 +59,7 @@ export default function TransactionCard({
                 R$ {transaction.value.toString()}
               </span>
             </div>
-            <div>
+            <div style={{ width: '20%', textAlign: 'right' }}>
               <button
                 data-target="modal1"
                 style={{ marginRight: '1em' }}
@@ -63,7 +67,7 @@ export default function TransactionCard({
               >
                 <i className="material-icons">border_color</i>
               </button>
-              <button>
+              <button onClick={handleDelete}>
                 <i className="material-icons">cancel</i>
               </button>
             </div>

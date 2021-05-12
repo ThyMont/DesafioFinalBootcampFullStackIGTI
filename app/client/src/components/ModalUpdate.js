@@ -9,7 +9,7 @@ export default function ModalUpdate({
   onSave,
   selectedTransaction,
 }) {
-  const [mode, setMode] = useState('update');
+  const [mode] = useState('update');
   const { _id, description, value, category, year, month, day, type } =
     selectedTransaction;
 

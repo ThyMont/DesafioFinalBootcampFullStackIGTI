@@ -5,6 +5,28 @@ export default function Select({ periods, currentPeriod, onChange }) {
     onChange(document.querySelector('#periods_select').value);
   };
 
+  const MONTH_DESCRIPTIONS = [
+    '',
+    'Jan',
+    'Fev',
+    'Mar',
+    'Abr',
+    'Mai',
+    'Jun',
+    'Jul',
+    'Ago',
+    'Set',
+    'Out',
+    'Nov',
+    'Dez',
+  ];
+
+  const periodName = (period) => {
+    const p = period.split('-');
+    const name = `${MONTH_DESCRIPTIONS[parseInt(p[1])]} / ${p[0]}`;
+    return name;
+  };
+
   return (
     <select
       id="periods_select"
@@ -17,7 +39,7 @@ export default function Select({ periods, currentPeriod, onChange }) {
       {periods.map((p) => {
         return (
           <option key={p} value={p}>
-            {p}
+            {periodName(p)}
           </option>
         );
       })}

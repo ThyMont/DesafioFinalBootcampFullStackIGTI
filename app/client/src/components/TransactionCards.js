@@ -1,7 +1,7 @@
 import React from 'react';
 import TransactionCard from './TransactionCard';
 
-export default function TransactionCards({ transactions, onClick }) {
+export default function TransactionCards({ transactions, onClick, doDelete }) {
   transactions.sort((a, b) => a.day - b.day);
 
   return (
@@ -13,6 +13,7 @@ export default function TransactionCards({ transactions, onClick }) {
             transactionID={transaction._id}
             transaction={transaction}
             onClick={onClick}
+            doDelete={doDelete}
           ></TransactionCard>
         );
       })}

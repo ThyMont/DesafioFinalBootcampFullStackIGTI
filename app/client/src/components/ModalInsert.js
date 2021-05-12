@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 Modal.setAppElement('#root');
 
 export default function ModalInsert({ isModalOpen, handleClose, onSave }) {
-  const [mode, setMode] = useState('insert');
+  const [mode] = useState('insert');
 
   const today = new Date();
   const defaultToday = `${today.getFullYear()}-${(today.getMonth() + 1)
